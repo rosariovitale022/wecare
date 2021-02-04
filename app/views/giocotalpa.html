@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+		* {
+				box-sizing: border-box;
+		}
+		.row::after {
+			content: "";
+			clear: both;
+			display: block;
+		}
+		[class*="col-"] {
+			float: left;
+			padding: 15px;
+		}
+		/* For desktop: */
+		.col-1 {width: 8.33%;}
+		.col-2 {width: 16.66%;}
+		.col-3 {width: 25%;}
+		.col-4 {width: 33.33%;}
+		.col-5 {width: 41.66%;}
+		.col-6 {width: 50%;}
+		.col-7 {width: 58.33%;}
+		.col-8 {width: 66.66%;}
+		.col-9 {width: 75%;}
+		.col-10 {width: 83.33%;}
+		.col-11 {width: 91.66%;}
+		.col-12 {width: 100%;}
+
+		div {
+		  border-style: solid;
+		  border-color: #fdcb9e;
+		  height: 150px;
+		  background-repeat: no-repeat;
+		  background-size: cover;
+		  background-position: center;
+		  color: #fdcb9e;
+		  background: #7d5a5a;
+		  text-align: center;
+		  font-size: 200%;
+		}
+
+		p {
+			color: #3f3f44;
+			padding-top: 30%;
+			font-size: 200%;
+		}
+
+		</style>
+	</head>
+	<body bgcolor=#cceabb>
+		<H1 style="text-align: center; color: #3f3f44;">Gioco della talpa</h1>
+
+		<script>
+		var timer;
+		var n = 0;
+		var oldN = -1;
+
+		for(i=0;i<24;i++){
+			document.write('<div id="'+i+ '"class="col-2" onclick="Selezione(id)"></div>');
+		}
+		var punti = 0;
+		document.write('<p id=punteggio style="text-align:center; color:#3f3f44">Punti = '+(punti)+'</p>');
+
+		nuovoRound();
+
+		function Selezione(num)
+		{
+			if (num == n)
+			{
+				punti = punti+1;
+				document.getElementById(num).style.background = "#fc8210";
+				document.getElementById(num).innerHTML = "+1";
+				if (punti >= 20)
+					Vittoria();
+
+			}
+			else
+			{
+				punti = punti-1;
+				document.getElementById(num).style.background = "#6f0000";
+				document.getElementById(num).innerHTML = "-1";
+
+			}
+
+			ResetExcept(num);
+			nuovoRound();
+			return;
+		}
+
+		function Reset()
+		{
+			for(i=0;i<24;i++){
+				document.getElementById(i).style.background = "#7d5a5a";
+				document.getElementById(i).innerHTML = "";
+			}
+		}
+
+		function ResetExcept(exception)
+		{
+			for(i=0;i<24;i++){
+				if (i != exception)
+				{
+					document.getElementById(i).style.background = "#7d5a5a";
+					document.getElementById(i).innerHTML = "";
+				}
+			}
+		}
+
+		function nuovoRound()
+		{
+			clearTimeout(timer);
+			do{
+				n = Math.floor(Math.random() * 24);
+			} while (n == oldN);
+			oldN = n;
+
+			document.getElementById(n).style.background = "#c3edea";
+			document.getElementById("punteggio").innerHTML = "Punti = "+(punti);
+			if (punti <0)
+					Sconfitta();
+
+			timer = setTimeout(() => {  Reset(); punti = punti-1; nuovoRound(); }, 1000);
+
+		}
+
+		function Sconfitta()
+		{
+			document.write('<body bgcolor=#cceabb>')
+				document.write('<H1 style="text-align: center; color: #3f3f44; margin-top:20%">Hai perso, ricarica la pagina!</H1>');
+				document.write('<p style="text-align:center;">Quando arrivi sotto gli 0 punti perdi la partita, fanne 20 per vincere!</p>');
+		}
+
+		function Vittoria()
+		{
+			document.write('<body bgcolor=#cceabb>')
+				document.write('<H1 style="text-align: center; color: #3f3f44; margin-top:20%">Hai vinto! Ricarica la pagina per rigiocare!</H1>');
+		}
+
+		</script>
+	</body>
+</html>
